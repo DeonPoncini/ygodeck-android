@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 project(ygodeck-android)
 
+if (${CROSS_TARGET} STREQUAL "android")
 find_package(ygodeck-java)
 
 set(EXAMPLE_VERSION "0.0.1")
 
 if(CMAKE_BUILD_TYPE MATCHES "[dD]ebug")
-    set(APK_TARGET_NAME "android-debug.apk")
+    set(APK_TARGET_NAME "ygodeck-android-debug.apk")
     set(GRADLE_TASK "assembleDebug")
 else()
-    set(APK_TARGET_NAME "android-release.apk")
+    set(APK_TARGET_NAME "ygodeck-android-release.apk")
     set(GRADLE_TASK "assembleRelease")
 endif()
 
@@ -39,3 +40,4 @@ export_project(
     APKS ${APK_TARGETS}
     VERSION ${EXAMPLE_VERSION}
 )
+endif()

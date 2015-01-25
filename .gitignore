@@ -4,3 +4,7 @@ local.properties
 gradle.properties
 .gradle/
 .idea/
+*.swp
+proguard-project.txt
+project.properties
+build.xml
