@@ -81,8 +81,6 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
 
         Button addButton = (Button) findViewById(R.id.deck_add_button);
         addButton.setOnClickListener(mOnAddCard);
-        Button removeButton = (Button) findViewById(R.id.deck_remove_button);
-        removeButton.setOnClickListener(mOnRemoveCard);
         Button exportButton = (Button) findViewById(R.id.deck_export_button);
         exportButton.setOnClickListener(mOnExport);
     }
@@ -147,6 +145,12 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
     @Override
+    public void onSideLongSelected(String id) {
+        mSideDeck.removeCard(id);
+        deleteCard(id);
+    }
+
+    @Override
     public void onExtraSelected(String id) {
         // launch the card viewer
         Intent intent = new Intent(DeckActivity.this, CardViewer.class);
@@ -154,6 +158,11 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
         startActivity(intent);
     }
 
+    @Override
+    public void onExtraLongSelected(String id) {
+        mExtraDeck.removeCard(id);
+        deleteCard(id);
+    }
 
     @Override
     public void onMainSelected(String id) {
@@ -161,6 +170,12 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
         Intent intent = new Intent(DeckActivity.this, CardViewer.class);
         intent.putExtra(CardViewer.EXTRA_CARD_NAME, id);
         startActivity(intent);
+    }
+
+    @Override
+    public void onMainLongSelected(String id) {
+        mMainDeck.removeCard(id);
+        deleteCard(id);
     }
 
     @Override
@@ -195,7 +210,6 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
     public void onExtraLoaded(DeckContent d) {
         Map<DataTypes.DeckType,List<DataTypes.StaticCardData>> cards = mDeckSet.cards();
         List<DataTypes.StaticCardData> extraCards = cards.get(DataTypes.DeckType.EXTRA);
-
 
         ArrayList<String> extraCardString = new ArrayList<String>();
         for(DataTypes.StaticCardData s : extraCards) {
@@ -268,14 +282,6 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
-    private View.OnClickListener mOnRemoveCard = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
     private View.OnClickListener mOnExport = new View.OnClickListener() {
 
         @Override
@@ -283,4 +289,16 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
 
         }
     };
+
+    private void deleteCard(String card) {
+        DataTypes.DeckType deckType;
+        switch (mCurrentDeck) {
+            case 0: deckType = DataTypes.DeckType.MAIN; break;
+            case 1: deckType = DataTypes.DeckType.SIDE; break;
+            case 2: deckType = DataTypes.DeckType.EXTRA; break;
+            default: return;
+        }
+        mDeckSet.deleteCard(deckType, card);
+    }
+
 }

@@ -23,7 +23,8 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class SideDeckFragment extends Fragment implements AbsListView.OnItemClickListener, DeckContent {
+public class SideDeckFragment extends Fragment implements AbsListView.OnItemClickListener,
+        AbsListView.OnItemLongClickListener, DeckContent {
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,6 +65,7 @@ public class SideDeckFragment extends Fragment implements AbsListView.OnItemClic
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
         mListener.onSideLoaded(this);
 
         return view;
@@ -86,7 +88,6 @@ public class SideDeckFragment extends Fragment implements AbsListView.OnItemClic
         mListener = null;
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
@@ -94,6 +95,16 @@ public class SideDeckFragment extends Fragment implements AbsListView.OnItemClic
             // fragment is attached to one) that an item has been selected.
             mListener.onSideSelected(mAdapter.getItem(position).toString());
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if (null != mListener) {
+            mListener.onSideLongSelected(mAdapter.getItem(position).toString());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -140,6 +151,7 @@ public class SideDeckFragment extends Fragment implements AbsListView.OnItemClic
      */
     public interface OnFragmentInteractionListener {
         public void onSideSelected(String id);
+        public void onSideLongSelected(String id);
         public void onSideLoaded(DeckContent d);
     }
 

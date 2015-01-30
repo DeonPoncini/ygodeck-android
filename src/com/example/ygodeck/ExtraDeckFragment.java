@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * interface.
  */
 public class ExtraDeckFragment extends Fragment implements AbsListView.OnItemClickListener,
-        DeckContent {
+        AbsListView.OnItemLongClickListener, DeckContent {
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,6 +65,7 @@ public class ExtraDeckFragment extends Fragment implements AbsListView.OnItemCli
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
         mListener.onExtraLoaded(this);
 
         return view;
@@ -95,6 +96,16 @@ public class ExtraDeckFragment extends Fragment implements AbsListView.OnItemCli
             // fragment is attached to one) that an item has been selected.
             mListener.onExtraSelected(mAdapter.getItem(position).toString());
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if (null != mListener) {
+            mListener.onExtraLongSelected(mAdapter.getItem(position).toString());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -141,6 +152,7 @@ public class ExtraDeckFragment extends Fragment implements AbsListView.OnItemCli
      */
     public interface OnFragmentInteractionListener {
         public void onExtraSelected(String id);
+        public void onExtraLongSelected(String id);
         public void onExtraLoaded(DeckContent d);
     }
 

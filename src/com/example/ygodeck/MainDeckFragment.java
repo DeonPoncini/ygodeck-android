@@ -23,7 +23,8 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class MainDeckFragment extends Fragment implements AbsListView.OnItemClickListener, DeckContent {
+public class MainDeckFragment extends Fragment implements AbsListView.OnItemClickListener,
+        AbsListView.OnItemLongClickListener, DeckContent {
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,6 +65,7 @@ public class MainDeckFragment extends Fragment implements AbsListView.OnItemClic
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(this);
         mListener.onMainLoaded(this);
 
         return view;
@@ -94,6 +96,16 @@ public class MainDeckFragment extends Fragment implements AbsListView.OnItemClic
             // fragment is attached to one) that an item has been selected.
             mListener.onMainSelected(mAdapter.getItem(position).toString());
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if (null != mListener) {
+            mListener.onMainLongSelected(mAdapter.getItem(position).toString());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -140,6 +152,7 @@ public class MainDeckFragment extends Fragment implements AbsListView.OnItemClic
      */
     public interface OnFragmentInteractionListener {
         public void onMainSelected(String id);
+        public void onMainLongSelected(String id);
         public void onMainLoaded(DeckContent d);
     }
 
