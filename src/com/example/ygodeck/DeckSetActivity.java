@@ -130,6 +130,8 @@ public class DeckSetActivity extends ActionBarActivity {
 
                 if (formatStr.equals("Traditional")) {
                     format = DataTypes.Format.TRADITIONAL;
+                } else if (formatStr.equals("MegaBanned")) {
+                    format = DataTypes.Format.MEGABANNED;
                 }
                 String formatDate = mFormatDateSpinner.getSelectedItem().toString();
                 Format f = new Format(format, formatDate);
