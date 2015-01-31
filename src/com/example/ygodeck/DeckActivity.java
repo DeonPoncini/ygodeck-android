@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -286,7 +285,13 @@ public class DeckActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public void onClick(View v) {
-
+            // validate the deck set
+            if (!mDeckSet.validate()) {
+                Toast.makeText(DeckActivity.this, "Deck Set Invalid", Toast.LENGTH_SHORT).show();
+            } else {
+                String export = mDeckSet.exportCards();
+                Toast.makeText(DeckActivity.this, export, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
